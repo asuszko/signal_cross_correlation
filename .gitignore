@@ -1,0 +1,62 @@
+*~
+
+# Directories #
+lib/
+
+
+# Datasets #
+############
+*.npy
+*.hdf5
+*.csv
+
+
+# Images #
+##########
+*.png
+*.gif
+*.jpg
+
+
+# Compiled source #
+###################
+*.so
+*.lib
+*.dll
+*.exp
+*.exe
+*.out
+*.pyo
+*.pyc
+*.com
+*.class
+
+
+# Packages #
+############
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+
+# Logs and databases #
+######################
+*.log
+*.sql
+*.sqlite
+
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
