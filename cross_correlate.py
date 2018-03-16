@@ -1,5 +1,10 @@
 # -*- coding: utf-8 -*-
 
+__all__ = [
+    "device_obj",
+    "run",
+]
+
 import numpy as np
 from pycu_interface import Device
 import warnings

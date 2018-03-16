@@ -7,7 +7,7 @@ the cuda_manager repo in the shared_utils folder.
 import argparse
 import os
 
-from pycu_interface.shared_utils.build import build
+from pycu_interface import build
 
 __lib_name = "cu_cross_correlate"
 

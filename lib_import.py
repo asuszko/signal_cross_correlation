@@ -11,18 +11,14 @@ from ctypes import (c_int,
                     c_void_p,
                     c_size_t)
 
-from numpy.ctypeslib import load_library, ndpointer
-import platform
+from numpy.ctypeslib import ndpointer
 
 
-wdir = os.path.dirname( __file__ )
-lib_path = os.path.abspath(os.path.join(wdir, "lib"))
+# Load the shared library
+from pycu_interface import load_lib
+lib_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "lib"))
+cu_lib = load_lib(lib_path,"cu_cross_correlate")
 
-## Load the DLL
-if platform.system() == 'Linux':
-    cu_lib = load_library("cu_cross_correlate.so", lib_path)
-elif platform.system() == 'Windows':
-    cu_lib = load_library("cu_cross_correlate.dll", lib_path)
 
 # Define argtypes for all functions to import
 argtype_defs = {

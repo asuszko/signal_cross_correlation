@@ -2,6 +2,7 @@
 
 # Directories #
 lib/
+pycu_interface/
 
 
 # Datasets #
