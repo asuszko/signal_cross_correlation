@@ -17,7 +17,7 @@ dtype_map = {np.dtype('f4'):0,
              np.dtype('f8'):1}
 
 
-class device_obj(Device):
+class device_obj(Device, object):
     """
     Object that initializes the device. Making this as an 
     object is useful to store device pointer references 
@@ -86,7 +86,7 @@ def run(device_obj, ref_signal, data, corr_coefs):
     
     batch_y, signal_len = data.shape
     batch_y_s = batch_y//len(device_obj.streams)
-    dims = np.array([signal_len,batch_y_s])
+    dims = np.array([signal_len,batch_y_s], dtype='i4')
     
     # Run the normalized cross correlation on the GPU stream(s)
     for stream_id,s in enumerate(device_obj.streams):
