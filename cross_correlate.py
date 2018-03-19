@@ -34,9 +34,11 @@ class device_obj(Device, object):
 
         batch_y, signal_len  = batch_size
         batch_y_s = batch_y//n_streams
+        
+        # Allocating memory chunk for each stream
         for s in self.streams:
             s.data = s.malloc((signal_len, batch_y_s), dtype=dtype)
-            s.corrcoefs = s.malloc((batch_y_s,), dtype=dtype)
+            s.corrcoefs = s.malloc(batch_y_s, dtype=dtype)
 
     
 
@@ -89,16 +91,16 @@ def run(device_obj, ref_signal, data, corr_coefs):
     dims = np.array([signal_len,batch_y_s], dtype='i4')
     
     # Run the normalized cross correlation on the GPU stream(s)
-    for stream_id,s in enumerate(device_obj.streams):
+    for stream_id, s in enumerate(device_obj.streams):
         
         data_chunk_start = stream_id*batch_y_s
         data_chunk_end = (stream_id+1)*batch_y_s
-        s.memcpy_h2d_async(s.data, data[data_chunk_start:data_chunk_end])
+        s.data.h2d_async(data[data_chunk_start:data_chunk_end], s.stream)
         
-        cross_correlate(s.corrcoefs,
-                        s.data,
+        cross_correlate(s.corrcoefs.ptr,
+                        s.data.ptr,
                         dims,
                         dtype_map[data.dtype],
                         s.stream)
                         
-        s.memcpy_d2h_async(corr_coefs[data_chunk_start:data_chunk_end], s.corrcoefs)
+        s.corrcoefs.d2h_async(corr_coefs[data_chunk_start:data_chunk_end], s.stream)
