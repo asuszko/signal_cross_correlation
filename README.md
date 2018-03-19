@@ -25,8 +25,6 @@ On Linux, the commands would be the same, with the -cc_bin argument omitted. If 
 To verify the code is working, in the root folder:
 > python run.py
 
-The result should look like:
-
 ![signal_cross_correlation result](https://lh3.googleusercontent.com/tLPTuFvWcqizc3w-hSiRkxjsWCOJauavWXHLn2lbnS3heECH4cmdTZ-PNJ5IFo3Uae-zKdRPlXMIgWQfURlB7X5T4CAg0pFm9_f4kMZkqzZW5VKVkEw42ocbg6Aq5_k4yiyJa0D66G-3dFv4BlA4lBd1tnAJy_U8ZDyIUlYIOEHao7ixisl3lxH1kK5L_6k5--AIQwur4LowH-IAc8RcAQ1oqjhE4iJJKjA39AspQ3-nz6l-5wSRj7AgAU_5mZ-_ru_8ku3JHhF88iN0wlrKx1i-sNhBkQuIs2_vc_ekFl_5musNRPIUSTX8G69D7n2I0yZAVQPXA5Zv-CerFeJbR4ESDhmvnuLrud5dQrTGWYGWFMN3uKTulFrmbBNLYEx3lhcfdZb-GtkW2Z7S7o5_6IwbJ3XTVP-0tGLa1DEmstG_Ky1icK2aOY5LNvl48ZZPxoYcN42gJp8XT5PBFJBwgj9rby7FkGp0vZabz3oRKlaKXn2Uuhur_YO1P7ynKOqIyFen6nnJpshfWCrme5tH5FsTT6_AXlWqG-enDVX2QOzC0GWwE5yOSoutkfwAKVJK03-oLBcdfBGbOqCHpvbqHjso6ueiHn4W4sICGVY=w640-h472-no)
 
 ## License
