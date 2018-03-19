@@ -1,4 +1,4 @@
-
+*
 # signal_cross_correlation
 
 This repo is for demonstration on how to use [pycu_interface](https://github.com/asuszko/pycu_interface) to access **GPU resource management, performance primitives, and custom CUDA kernel calls to accelerate Python code**. As the [pycu_interface](https://github.com/asuszko/pycu_interface) framework is flexible, this is just one of many ways a user can accelerate their Python code.
@@ -15,7 +15,7 @@ To clone the repo and all subrepos with it, in your terminal or git console, run
 To compile the shared libraries needed, run the **setup.py** file found in the root folder of **pycu_interface**, with optional argument(s) -arch, and -cc_bin if on Windows. On Windows, the NVCC compiler looks for cl.exe to compile the C/C++ code. cl.exe comes with Visual Studio. On Linux, it uses the built in gcc compiler. An example of a command line run (on Windows) to compile the code is given below:
 > python setup.py -arch=sm_50 -cc_bin="C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin"
 
-After the libraries in pycu_interface are compiled, run the **setup.py** file in the root folder of **signal_cross_correlation*:
+After the libraries in pycu_interface are compiled, run the **setup.py** file in the root folder of **signal_cross_correlation**:
 > python setup.py -arch=sm_50 -cc_bin="C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin"
 
 On Linux, the commands would be the same, with the -cc_bin argument omitted. If you are unable to compile the libraries, you may [download the latest precompiled libraries here](https://github.com/asuszko/pycu_interface_libs).
