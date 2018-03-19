@@ -1,4 +1,3 @@
-*
 # signal_cross_correlation
 
 This repo is for demonstration on how to use [pycu_interface](https://github.com/asuszko/pycu_interface) to access **GPU resource management, performance primitives, and custom CUDA kernel calls to accelerate Python code**. As the [pycu_interface](https://github.com/asuszko/pycu_interface) framework is flexible, this is just one of many ways a user can accelerate their Python code.
