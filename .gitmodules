@@ -1,3 +1,3 @@
-[submodule "signal_cross_correlation"]
-	path = signal_cross_correlation
-	url = https://github.com/asuszko/signal_cross_correlation.git
+[submodule "pycu_interface"]
+	path = pycu_interface
+	url = https://github.com/asuszko/pycu_interface.git
