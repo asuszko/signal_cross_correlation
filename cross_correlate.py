@@ -37,8 +37,8 @@ class device_obj(Device, object):
         
         # Allocating memory chunk for each stream
         for s in self.streams:
-            s.data = s.malloc((signal_len, batch_y_s), dtype=dtype)
-            s.corrcoefs = s.malloc(batch_y_s, dtype=dtype)
+            s.data = s.malloc((signal_len, batch_y_s), dtype=dtype, stream=s.stream)
+            s.corrcoefs = s.malloc(batch_y_s, dtype=dtype, stream=s.stream)
 
     
 
@@ -95,7 +95,7 @@ def run(device_obj, ref_signal, data, corr_coefs):
         
         data_chunk_start = stream_id*batch_y_s
         data_chunk_end = (stream_id+1)*batch_y_s
-        s.data.h2d_async(data[data_chunk_start:data_chunk_end], s.stream)
+        s.data.to_device_async(data[data_chunk_start:data_chunk_end])
         
         cross_correlate(s.corrcoefs.ptr,
                         s.data.ptr,
@@ -103,4 +103,4 @@ def run(device_obj, ref_signal, data, corr_coefs):
                         dtype_map[data.dtype],
                         s.stream)
                         
-        s.corrcoefs.d2h_async(corr_coefs[data_chunk_start:data_chunk_end], s.stream)
+        s.corrcoefs.to_host_async(corr_coefs[data_chunk_start:data_chunk_end])
