@@ -3,7 +3,7 @@
 
 #define IX2D(i,j,nx) (((j)*(nx))+(i))
 
-#define BLOCK_SIZE_X 256
+#define BLOCKSIZE 256
 
 __constant__ char d_signal_mf[49152];
 
@@ -16,7 +16,7 @@ __constant__ char d_signal_mf[49152];
 *  @return r [T] : Normalized cross correlation result.
 */
 template <typename T>
-__device__ T correlate_xy(T *y, int signal_len)
+__device__ T correlate_xy(const T* __restrict__ y, int signal_len)
 {
     T zero = static_cast<T>(0);
     T s_xisq = zero;
@@ -46,7 +46,7 @@ __device__ T correlate_xy(T *y, int signal_len)
     
     T r = (s_xiyi - Tcounter*s_xbar*s_ybar)/
             (static_cast<T>(sqrt(s_xisq - Tcounter*s_xbar*s_xbar))*
-            static_cast<T>(sqrt(s_yisq - Tcounter*s_ybar*s_ybar)));
+             static_cast<T>(sqrt(s_yisq - Tcounter*s_ybar*s_ybar)));
     
     return r;
 }
@@ -61,15 +61,16 @@ __device__ T correlate_xy(T *y, int signal_len)
 *  @param signal_len [int] : Length of each signal in the data matrix.
 */
 template <typename T>
-__global__ void cross_correlate_kernel(T *corrcoef,
-                                       T *data,
+__global__ void cross_correlate_kernel(T* __restrict__ corrcoef,
+                                       const T* __restrict__ data,
                                        int batch_y,
                                        int signal_len)
 {
-    int iy = threadIdx.x + blockIdx.x * blockDim.x;
+    int index = threadIdx.x + blockIdx.x * blockDim.x;
+    int stride = gridDim.x * blockDim.x;
     
-    if(iy < batch_y) {
-        corrcoef[iy] = correlate_xy(&data[iy*signal_len], signal_len);
+    for(; index < batch_y; index+=stride) {
+        corrcoef[index] = correlate_xy(&data[index*signal_len], signal_len);
     }
 }
 
@@ -106,23 +107,24 @@ void cross_correlate(void *d_corrcoef,
     int batch_y = dims.y;
 
     /* Get the grid size for this stream. */
-    dim3 blockSize(BLOCK_SIZE_X);
-    dim3 gridSize((batch_y-1)/blockSize.x+1);
+    dim3 blockSize(BLOCKSIZE);
+    dim3 gridSize((((batch_y-1)/blockSize.x+1)-1)/blockSize.x+1);
+    
+    cudaStream_t stream_id;
+    (stream == NULL) ? stream_id = NULL : stream_id = *stream;
 
     switch(dtype_id) {
-        case 0: {
-            cross_correlate_kernel<<<gridSize, blockSize, 0, *stream>>>((float *)d_corrcoef,
-                                                                        (float *)d_data,
-                                                                        batch_y, signal_len);
+        case 0:
+            cross_correlate_kernel<<<gridSize, blockSize, 0, stream_id>>>(static_cast<float*>(d_corrcoef),
+                                                                          static_cast<const float*>(d_data),
+                                                                          batch_y, signal_len);
             break;
-        }
 
-        case 1: {
-            cross_correlate_kernel<<<gridSize, blockSize, 0, *stream>>>((double *)d_corrcoef,
-                                                                        (double *)d_data,
-                                                                        batch_y, signal_len);
+        case 1:
+            cross_correlate_kernel<<<gridSize, blockSize, 0, stream_id>>>(static_cast<double*>(d_corrcoef),
+                                                                          static_cast<const double*>(d_data),
+                                                                          batch_y, signal_len);
             break;
-        }
     }
     return;
 }
