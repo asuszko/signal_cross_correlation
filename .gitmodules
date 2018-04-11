@@ -1,0 +1,3 @@
+[submodule "pycu_interface"]
+	path = pycu_interface
+	url = https://github.com/asuszko/pycu_interface.git
